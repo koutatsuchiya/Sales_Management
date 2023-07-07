@@ -1,0 +1,99 @@
+<div class="col-12">
+    <div class="card h-100">
+        <h5 class="card-header text-info bg-secondary">{{catName}}</h5>
+        <div class="card-body d-flex flex-column p-0">
+            <table class="table table-bordered">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Image</th>
+                        <th scope="col-1">Description</th>
+                        <th scope="col">Full Description</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Stock</th>
+                        {{#if per}}
+                        <th scope="col">Edit</th>
+                        {{/if}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each prodList}}
+                    <tr>
+                        <td>{{this.ProName}}</td>
+                        <td><img src="/pid/{{this.ProID}}/main.jpg" alt="{{this.ProID}}" style="height: 8em; width:8em"></td>
+                        <td>{{this.TinyDes}}</td>
+                        <td>{{{this.FullDes}}}</td>
+                        <td>{{this.Price}}</td>
+                        <td>{{this.Quantity}}</td>
+                        {{#if per}}
+                        <td>
+                            <a class="btn btn-secondary" href="/products/edit?proid={{this.ProID}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a class="btn btn-danger" href="/products/delete?proid={{this.ProID}}"><i class="fa-solid fa-trash"></i></a>
+                        </td>
+                        {{/if}}
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation" class="my-2 ms-3">
+                <ul class="pagination">
+                    {{#each page_items}}
+                    <li class="page-item {{#if this.isActive}}active{{/if}}"><a class="page-link" href="/products?catid={{../catId}}&catname={{../catName}}&page={{this.value}}">{{this.value}}</a></li>
+                    {{/each}}
+                </ul>
+            </nav>
+            {{#if per}}
+            <form action="/products/add" method="post" class="d-flex flex-column" enctype="multipart/form-data">
+                <h5 class="text-center text-info">Add product for {{catName}}</h5>
+                <div class="d-flex">
+                    <div class="input-group m-3">
+                        <span class="input-group-text" id="basic-addon1">Product name</span>
+                        <input name="pName" type="text" class="form-control" placeholder="Product name" aria-label="Product name" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group m-3 w-50">
+                        <span class="input-group-text" id="basic-addon4">Price</span>
+                        <input name="pPrice" type="number" class="form-control" placeholder="Price" aria-label="Price" aria-describedby="basic-addon4">
+                    </div>
+                    <div class="input-group m-3 w-50">
+                        <span class="input-group-text" id="basic-addon5">Quantity</span>
+                        <input name="pQuan" type="number" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon5">
+                    </div>
+                </div>
+                <input name="pCatid" type="number" value="{{catId}}" hidden>
+                <div class="d-flex">
+                    <div class="input-group m-3 mt-0 w-50">
+                        <span class="input-group-text" id="basic-addon2">Description</span>
+                        <textarea name="pTiny" class="form-control" placeholder="Description" aria-label="Description" aria-describedby="basic-addon2"></textarea>
+                    </div>
+                    <div class="input-group m-3 mt-0">
+                        <span class="input-group-text" id="basic-addon3">Full description</span>
+                        <textarea name="pFull" class="form-control" placeholder="Full description" aria-label="Full description" aria-describedby="basic-addon3"></textarea>
+                    </div>
+                </div>
+                <div class="m-3 mt-0 d-flex flex-column align-items-center">
+                    <div class="d-flex w-50 justify-content-evenly align-items-center">
+                        <label for="prodImg" class="form-label pt-1">Product image</label>
+                        <input class="form-control w-75" type="file" id="prodImg" name="pImg">
+                    </div>
+                    <button class="btn btn-success mt-3" id="addBtn" type="submit"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </form>
+            {{/if}}
+        </div>
+    </div>
+</div>
+<div class="row my-5">
+    {{> footer}}
+</div>
+<script>
+    $(function(){
+        $('#addBtn').click(function(e){
+            var inputs = $('input:not([type="file"]), textarea');
+            inputs.each(function() {
+                if ($(this).val().trim() === '') {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script>

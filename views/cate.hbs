@@ -1,0 +1,57 @@
+<div class="col-12">
+    <div class="card h-100">
+        <div class="card-body d-flex flex-column">
+            {{#each cateList}}
+            <form action="/category/edit?catid={{this.CatID}}" method="post" id="form_edit_cat{{this.CatID}}"></form>
+            {{/each}}
+            <table class="table table-bordered">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Category</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Order</th>
+                        {{#if per}}
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                        {{/if}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each cateList}}
+                    <tr>
+                        <th scope="row"><input name="newCatName" type="text" form="form_edit_cat{{this.CatID}}" class="border-0" value="{{this.CatName}}" aria-label="Category name"></th>
+                        <td><a class="btn btn-success" href="/products?catid={{this.CatID}}&catname={{this.CatName}}"><i class="fa-solid fa-list"></i></a></td>
+                        <td><a class="btn btn-warning" href="/orders?catid={{this.CatID}}&catname={{this.CatName}}"><i class="fa-solid fa-basket-shopping"></i></a></td>
+                        {{#if per}}
+                        <td><button type="submit" form="form_edit_cat{{this.CatID}}" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></button></td>
+                        <td><a class="btn btn-danger" href="/category/delete?catid={{this.CatID}}"><i class="fa-solid fa-trash"></i></a></td>
+                        {{/if}}
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            <div class="d-flex w-100 justify-content-between">
+                <form action="/category/add" method="post" class="d-flex w-25">
+                    <button class="btn btn-success me-2" id="addBtn" type="submit"><i class="fa-solid fa-plus"></i></button>
+                    <input name="newCate" class="form-control" id="newCate" type="text" placeholder="New category" aria-label="New category">
+                </form>
+                <button class="btn btn-info" id="helpBtn"><i class="fa-solid fa-question"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row my-5">
+    {{> footer}}
+</div>
+<script>
+    $(function(){
+        $('#addBtn').click(function(e){
+            if ($('#newCate').val() == '') {
+                e.preventDefault();
+            }
+        });
+        $('#helpBtn').click(function(e){
+            alert("Thêm: Nhập ô new category rồi ấn +\nSửa: Nhấn trỏ chuột vào ô category cần sửa rồi ấn sửa\nXóa: Ấn nút xóa");
+        });
+    });
+</script>

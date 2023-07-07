@@ -1,0 +1,30 @@
+<div class="col-12">
+    <div class="card h-100">
+        <h5 class="card-header text-info bg-secondary">My orders</h5>
+        <div class="card-body d-flex flex-column p-0 m-1">
+            <table class="table table-bordered">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Order Date</th>
+                        <th scope="col">Total Cost</th>
+                        <th scope="col">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each oList}}
+                    <tr>
+                        <td>{{this.OrderID}}</td>
+                        <td>{{this.OrderDate}}</td>
+                        <td>{{this.Total}}</td>
+                        <td><a class="btn btn-success" href="/orders/details?oid={{this.OrderID}}"><i class="fa-solid fa-list"></i></a></td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row my-5">
+    {{> footer}}
+</div>

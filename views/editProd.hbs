@@ -1,0 +1,54 @@
+<div class="col-12">
+    <div class="card h-100">
+        <div class="card-body d-flex flex-column p-0">
+            <form action="/products/edit/update" method="post" class="d-flex flex-column" enctype="multipart/form-data">
+                <h5 class="text-center text-info mt-3">Edit product {{p.ProName}}</h5>
+                <input type="text" name="referer" value="{{referer}}" hidden>
+                <input type="text" name="proid" value="{{p.ProID}}" hidden>
+                <div class="d-flex align-items-center">
+                    <div class="input-group m-3">
+                        <span class="input-group-text" id="basic-addon1">Product name</span>
+                        <input name="pName" type="text" value="{{p.ProName}}" class="form-control" placeholder="Product name" aria-label="Product name" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group m-3 w-50">
+                        <span class="input-group-text" id="basic-addon4">Price</span>
+                        <input name="pPrice" type="number" value="{{p.Price}}" class="form-control" placeholder="Price" aria-label="Price" aria-describedby="basic-addon4">
+                    </div>
+                    <div class="input-group m-3 w-50">
+                        <span class="input-group-text" id="basic-addon5">Quantity</span>
+                        <input name="pQuan" type="number" value="{{p.Quantity}}" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon5">
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="input-group m-3 mt-0 w-50">
+                        <span class="input-group-text" id="basic-addon2">Description</span>
+                        <textarea name="pTiny" class="form-control" placeholder="Description" aria-label="Description" aria-describedby="basic-addon2">{{p.TinyDes}}</textarea>
+                    </div>
+                    <div class="input-group m-3 mt-0">
+                        <span class="input-group-text" id="basic-addon3">Full description</span>
+                        <textarea name="pFull" class="form-control" placeholder="Full description" aria-label="Full description" aria-describedby="basic-addon3">{{p.FullDes}}</textarea>
+                    </div>
+                </div>
+                <div class="mb-3 mt-0 d-flex align-self-center">
+                    <div class="me-5">
+                        <label for="prodImg" class="form-label">Product image (don't upload if there is no need to change the image)</label>
+                        <input class="form-control" type="file" id="prodImg" name="pImg">
+                    </div>
+                    <div class="ms-5">
+                        <label for="floatingSelect">Category</label>
+                        <select name="catSel" class="form-select mt-2" id="floatingSelect" aria-label="Floating label select example">
+                            <option value="{{curCate.CatID}}" selected>{{curCate.CatName}}</option>
+                            {{#each otherCate}}
+                            <option value="{{this.CatID}}">{{this.CatName}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-success mb-3 align-self-center" id="addBtn" type="submit"><i class="fa-solid fa-floppy-disk"></i></button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row my-5">
+    {{> footer}}
+</div>

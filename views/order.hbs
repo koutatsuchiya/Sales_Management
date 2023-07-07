@@ -1,0 +1,115 @@
+<div class="col-12">
+    <div class="card h-100">
+        <h5 class="card-header text-info bg-secondary">{{catName}}</h5>
+        <div class="card-body d-flex flex-column p-0 m-1">
+            <table class="table table-bordered">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Image</th>
+                        <th scope="col-1">Description</th>
+                        <th scope="col">Full Description</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Add to cart</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each prodList}}
+                    <tr>
+                        <td>{{this.ProName}}</td>
+                        <td><img src="/pid/{{this.ProID}}/main.jpg" alt="{{this.ProID}}" style="height: 8em; width:8em"></td>
+                        <td>{{this.TinyDes}}</td>
+                        <td>{{{this.FullDes}}}</td>
+                        <td>{{this.Price}}</td>
+                        <td>{{this.Quantity}}</td>
+                        <td>
+                            <input id="price{{this.ProID}}" type="text" value="{{this.Price}}" hidden>
+                            <input id="quan{{this.ProID}}" type="number" min="0" max="{{this.Quantity}}" class="w-50" name="" disabled>
+                            <button id="cart{{this.ProID}}" class="btn btn-info"><i class="bi bi-cart"></i></button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            <div class="col-md-6 offset-md-3" id="confirmMess" hidden>
+                <div class="card mt-5 confirmation-message bg-secondary">
+                    <div class="card-body text-center">
+                        <h4 class="card-title text-white">Confirmation Message</h4>
+                        <p class="card-text text-white">Do you want to make this order?</p>
+                        <button id="yesBtn" class="btn btn-danger">Yes</button>
+                        <button id="noBtn" class="btn btn-primary">No</button>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end me-3">
+            <button class="btn btn-warning"><i class="fa-solid fa-basket-shopping"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row my-5">
+    {{> footer}}
+</div>
+<script>
+    $(function(){
+        //turn on cart btn to start choosing quantity for that product
+        $('.btn-info').click(function(e){
+            const pid = $(this).prop("id").substring(4);
+            if (parseInt($(`#quan${pid}`).prop('max')) > 0) {
+                if ($(this).children().hasClass('bi-cart')) {
+                    $(this).children().removeClass('bi-cart');
+                    $(this).children().addClass('bi-cart-check-fill');
+                    $(`#quan${pid}`).prop("disabled", false);
+                }
+                else if ($(this).children().hasClass('bi-cart-check-fill')) {
+                    $(this).children().removeClass('bi-cart-check-fill');
+                    $(this).children().addClass('bi-cart');
+                    $(`#quan${pid}`).val('');
+                    $(`#quan${pid}`).prop("disabled", true);
+                }
+            }
+        });
+        //confirmation message handlings
+        var pOrder;
+        $('.btn-warning').click(function(e){
+            //get order in4
+            const qs = $('input[type="number"]').not(':disabled').toArray();
+            pOrder = [];
+            for (const q of qs) {
+                if (q.value != '' && q.value != '0') {
+                    const pid = q.id.substring(4);
+                    pOrder.push({pid: parseInt(pid), quan: parseInt(q.value), 
+                                price: parseInt($(`#price${pid}`).val())});
+                }
+            }
+            if (pOrder.length) {
+                $('#confirmMess').prop("hidden", false);
+                //prevent interaction with other element
+                var confirmationMessage = $("#confirmMess");
+                $("body > *").not(confirmationMessage).css("pointer-events", "none");
+                confirmationMessage.css("pointer-events", "auto");
+            }
+        });
+        $('#noBtn').click(function(e){
+            $('#confirmMess').prop("hidden", true);
+            $("body > *").css("pointer-events", "auto");
+        });
+        //jquery ajax to make order
+        $('#yesBtn').click(function(e){
+            //console.log(pOrder);
+            $.ajax({
+                url: "/orders/add",
+                type: "POST",
+                data: {order: pOrder},
+                success: function(res){
+                    location.reload();
+                },
+                error: function(xhr, status, error){
+                    alert(error);
+                    location.reload();
+                }
+            });
+        });
+    });
+</script>
