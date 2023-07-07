@@ -18,8 +18,8 @@
                 </thead>
                 <tbody>
                     {{#each cateList}}
-                    <tr>
-                        <th scope="row"><input name="newCatName" type="text" form="form_edit_cat{{this.CatID}}" class="border-0" value="{{this.CatName}}" aria-label="Category name"></th>
+                    <tr>        
+                        <th scope="row"><input name="newCatName" type="text" form="form_edit_cat{{this.CatID}}" class="border-0" value="{{this.CatName}}" aria-label="Category name" {{#unless per}}readonly{{/unless}}></th>
                         <td><a class="btn btn-success" href="/products?catid={{this.CatID}}&catname={{this.CatName}}"><i class="fa-solid fa-list"></i></a></td>
                         <td><a class="btn btn-warning" href="/orders?catid={{this.CatID}}&catname={{this.CatName}}"><i class="fa-solid fa-basket-shopping"></i></a></td>
                         {{#if per}}
@@ -30,6 +30,7 @@
                     {{/each}}
                 </tbody>
             </table>
+            {{#if per}}
             <div class="d-flex w-100 justify-content-between">
                 <form action="/category/add" method="post" class="d-flex w-25">
                     <button class="btn btn-success me-2" id="addBtn" type="submit"><i class="fa-solid fa-plus"></i></button>
@@ -37,6 +38,7 @@
                 </form>
                 <button class="btn btn-info" id="helpBtn"><i class="fa-solid fa-question"></i></button>
             </div>
+            {{/if}}
         </div>
     </div>
 </div>

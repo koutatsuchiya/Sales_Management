@@ -39,8 +39,13 @@
 <script>
     $(function() {
         $('#suBtn').click(function(e) {
-            if($('.pw').val() != $('.con_pw').val() || $(':text').val() === '' || $(":input[name='email']").val() === '' || $(':password').val() === '') {
+            if($(':text').val() === '' || $(":input[name='email']").val() === '' || $(':password').val() === '') {
                 e.preventDefault();
+                console.log("Vui lòng điền đầy đủ thông tin!");
+            }            
+            if($('.pw').val() != $('.con_pw').val()) {
+                e.preventDefault();
+                console.log("Xác nhận mật khẩu chưa đúng!");
             }
         });
     });
