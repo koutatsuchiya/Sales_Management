@@ -14,7 +14,7 @@ router.get('/google', checkAuth.checkAuthenticated, async (req, res, next) => {
     try {
         const cates = await cateModels.getCates();
         req.session.un = req.user.name.givenName;
-        const u = await userModels.getUser(req.session.un);
+        const u = await userModels.getUserByEmail(req.user.emails[0].value);
         req.session.uid = u.f_ID;
         res.render("cate", {cateList: cates, userName: req.session.un});
     } catch (error) {
@@ -25,7 +25,7 @@ router.get('/facebook', checkAuth.checkAuthenticated, async (req, res, next) => 
     try {
         const cates = await cateModels.getCates();
         req.session.un = req.user.displayName;
-        const u = await userModels.getUser(req.session.un);
+        const u = await userModels.getUserByEmail(req.user.emails[0].value);
         req.session.uid = u.f_ID;
         res.render("cate", {cateList: cates, userName: req.session.un});
     } catch (error) {
