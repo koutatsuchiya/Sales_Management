@@ -17,7 +17,7 @@ passport.use(new GoogleStrategy({
         let user = await userModels.getUserByEmail(email);
         if (!user) {
             const dateRegister = dateTimeUtils.getFullDate(new Date());
-            await userModels.signup(profile.name.givenName, profile.displayName, email, dateRegister);
+            await userModels.signup(profile.name.givenName, 'none', profile.displayName, email, dateRegister);
         }
         return cb(null, profile);
     }

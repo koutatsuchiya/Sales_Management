@@ -17,7 +17,7 @@ passport.use(new FacebookStrategy({
         let user = await userModels.getUser(email);
         if (!user) {
             const dateRegister = dateTimeUtils.getFullDate(new Date());
-            await userModels.signup(profile.displayName, profile.displayName, email, dateRegister);
+            await userModels.signup(profile.displayName, 'none', profile.displayName, email, dateRegister);
         }
         return cb(null, profile);
     }
