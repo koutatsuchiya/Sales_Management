@@ -14,7 +14,7 @@ passport.use(new FacebookStrategy({
     profileFields: ['id', 'email', 'displayName'] // Request additional fields here
     }, async function(accessToken, refreshToken, profile, cb) {
         const email = profile.emails[0].value;
-        let user = await userModels.getUser(email);
+        let user = await userModels.getUserByEmail(email);
         if (!user) {
             const dateRegister = dateTimeUtils.getFullDate(new Date());
             await userModels.signup(profile.displayName, 'none', profile.displayName, email, dateRegister);
